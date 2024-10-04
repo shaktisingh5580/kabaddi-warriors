@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kabaddi Warriors - Strength, Strategy, Spirit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #ff4081;
+            --secondary-bg: #1e1e1e;
+            --tertiary-bg: #2a2a2a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--secondary-bg);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background-color: var(--secondary-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .team-members, .sponsors, .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .team-member, .sponsor {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--tertiary-bg);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover, .sponsor:hover {
+            transform: scale(1.05);
+        }
+        
+        .team-member img, .sponsor img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 4px solid var(--accent-color);
+        }
+        
+        .news-item, .match {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--tertiary-bg);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .news-item:hover, .match:hover {
+            transform: translateX(10px);
+        }
+        
+        form {
+            display: grid;
+            gap: 20px;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            background-color: var(--tertiary-bg);
+            color: var(--text-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background-color: #ff679a;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background-color: var(--secondary-bg);
+            margin-top: 60px;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+        
+        #home {
+            text-align: center;
+            padding: 80px 0;
+        }
+        
+        #home h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        #home p {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            #home h1 {
+                font-size: 2rem;
+            }
+            
+            #home p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#matches">Matches</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#sponsors">Sponsors</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="home">
+            <h1>Welcome to Kabaddi Warriors</h1>
+            <p>Strength, Strategy, Spirit</p>
+        </section>
+
+        <section id="matches">
+            <h2>Upcoming Matches</h2>
+            <div class="match">
+                <h3>Kabaddi Warriors vs Thunderbolts</h3>
+                <p>Date: June 15, 2023</p>
+                <p>Time: 18:00</p>
+                <p>Venue: City Stadium</p>
+            </div>
+            <div class="match">
+                <h3>Kabaddi Warriors vs Lightning Raiders</h3>
+                <p>Date: June 22, 2023</p>
+                <p>Time: 19:30</p>
+                <p>Venue: Sports Complex</p>
+            </div>
+        </section>
+
+        <section id="team">
+            <h2>Our Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="/placeholder.svg?height=180&width=180" alt="John Doe">
+                    <h3>John Doe</h3>
+                    <p>Captain</p>
+                </div>
+                <div class="team-member">
+                    <img src="/placeholder.svg?height=180&width=180" alt="Jane Smith">
+                    <h3>Jane Smith</h3>
+                    <p>Defender</p>
+                </div>
+                <div class="team-member">
+                    <img src="/placeholder.svg?height=180&width=180" alt="Mike Johnson">
+                    <h3>Mike Johnson</h3>
+                    <p>Raider</p>
+                </div>
+                <div class="team-member">
+                    <img src="/placeholder.svg?height=180&width=180" alt="Sarah Lee">
+                    <h3>Sarah Lee</h3>
+                    <p>All-Rounder</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="news">
+            <h2>Recent News</h2>
+            <div class="news-item">
+                <h3>Kabaddi Warriors Secure Victory in Season Opener</h3>
+                <p>Our team started the season with a bang, defeating the reigning champions in a thrilling match that went down to the wire. The final score was 38-35, with our captain John Doe scoring the winning point in the last raid.</p>
+            </div>
+            <div class="news-item">
+                <h3>New Player Joins Kabaddi Warriors</h3>
+                <p>We're excited to announce the addition of star player Alex Thompson to our roster. Alex brings years of experience and a track record of excellence that will undoubtedly strengthen our team's performance this season.</p>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>Media Gallery</h2>
+            <div class="gallery">
+                <img src="/placeholder.svg?height=200&width=300" alt="Match Highlight 1">
+                <img src="/placeholder.svg?height=200&width=300" alt="Team Practice">
+                <img src="/placeholder.svg?height=200&width=300" alt="Fan Celebration">
+                <img src="/placeholder.svg?height=200&width=300" alt="Victory Moment">
+                <img src="/placeholder.svg?height=200&width=300" alt="Team Huddle">
+                <img src="/placeholder.svg?height=200&width=300" alt="Award Ceremony">
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>Our Motto and Inspiration</h2>
+            <p>At Kabaddi Warriors, we draw inspiration from the strength and wisdom of Lord Ram and the devotion and power of Lord Hanuman. Our motto, "Strength, Strategy, Spirit," embodies the values we bring to every match.</p>
+            <p>We believe in the power of teamwork, the importance of strategic thinking, and the unbreakable spirit that drives us to excel. Just as Lord Ram's wisdom guided his actions and Lord Hanuman's devotion gave him immense strength, we strive to combine intelligence and power in our game.</p>
+            <p>Our team trains rigorously, not just in physical prowess but also in mental agility. We respect our opponents, honor the game, and always play with integrity. The Kabaddi Warriors are more than just a team; we're a family united by our love for the sport and our commitment to excellence.</p>
+        </section>
+
+        <section id="sponsors">
+            <h2>Our Sponsors and Partners</h2>
+            <div class="sponsors">
+                <div class="sponsor">
+                    <img src="/placeholder.svg?height=180&width=180" alt="TechCorp Logo">
+                    <h3>TechCorp</h3>
+                    <p>Leading Technology Solutions</p>
+                </div>
+                <div class="sponsor">
+                    <img src="/placeholder.svg?height=180&width=180" alt="SportGear Logo">
+                    <h3>SportGear</h3>
+                    <p>Premium Sports Equipment</p>
+                </div>
+                <div class="sponsor">
+                    <img src="/placeholder.svg?height=180&width=180" alt="HealthPlus Logo">
+                    <h3>HealthPlus</h3>
+                    <p>Nutrition and Wellness Experts</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <form id="contact-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" required rows="5"></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Kabaddi Warriors. All rights reserved.</p>
+        <p>Follow us on social media for the latest updates!</p>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message. We will get back to you soon!');
+            this.reset();
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

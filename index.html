@@ -1,365 +1,337 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kabaddi Warriors - Strength, Strategy, Spirit</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #121212;
-            --text-color: #e0e0e0;
-            --accent-color: #ff4081;
-            --secondary-bg: #1e1e1e;
-            --tertiary-bg: #2a2a2a;
+'use client'
+
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Text, OrbitControls } from '@react-three/drei'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Menu, X } from 'lucide-react'
+
+const navItems = [
+  { name: 'About', href: '#about' },
+  { name: 'Syllabus', href: '/chatbot' },
+  { name: 'Event notifications', href: '/event-notification' },
+  { name: 'Courses', href: '/courses' },
+  { name: 'Articles', href: '/articles' },
+  { name: 'Join Us', href: '#join' },
+  { name: 'Explore SDC', href: 'https://studentdeveloperclub.tech/?i=2' },
+]
+
+const courses = [
+  { name: 'Web Development Basics', description: 'HTML, CSS, JavaScript fundamentals' },
+  { name: 'Python for Beginners', description: 'Learn Python programming from scratch' },
+  { name: 'Data Structures & Algorithms', description: 'Essential CS concepts for interviews' },
+  { name: 'Mobile App Development', description: 'Build apps for iOS and Android' },
+  { name: 'Machine Learning Basics', description: 'Introduction to AI and ML concepts' },
+]
+
+const AnimatedText = ({ children }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+const FloatingObject = () => {
+  const mesh = useRef()
+  useFrame((state, delta) => {
+    mesh.current.rotation.x += delta * 0.2
+    mesh.current.rotation.y += delta * 0.3
+    mesh.current.position.y = Math.sin(state.clock.elapsedTime) * 0.2
+  })
+
+  return (
+    <mesh ref={mesh}>
+      <torusKnotGeometry args={[1, 0.3, 100, 16]} />
+      <meshStandardMaterial color="white" wireframe />
+    </mesh>
+  )
+}
+
+const HeroCanvas = () => {
+  return (
+    <Canvas camera={{ position: [0, 0, 5] }}>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} />
+      <FloatingObject />
+      <OrbitControls enableZoom={false} />
+      <Text
+        position={[0, 1.5, 0]}
+        fontSize={0.5}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Programming for Losers
+      </Text>
+    </Canvas>
+  )
+}
+
+export default function ProgrammingForLosers() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('section')
+      let currentActiveSection = ''
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop
+        const sectionHeight = section.clientHeight
+        if (window.pageYOffset >= sectionTop - 200 && window.pageYOffset < sectionTop + sectionHeight - 200) {
+          currentActiveSection = section.id
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background-color: var(--secondary-bg);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        nav ul {
-            list-style-type: none;
-            display: flex;
-            justify-content: center;
-        }
-        
-        nav ul li {
-            margin: 0 15px;
-        }
-        
-        nav ul li a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-            font-size: 1.1rem;
-        }
-        
-        nav ul li a:hover {
-            color: var(--accent-color);
-        }
-        
-        h1, h2, h3 {
-            margin-bottom: 20px;
-            color: var(--accent-color);
-        }
-        
-        section {
-            margin-bottom: 60px;
-            padding: 40px;
-            background-color: var(--secondary-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        section:hover {
-            transform: translateY(-5px);
-        }
-        
-        .team-members, .sponsors, .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .team-member, .sponsor {
-            text-align: center;
-            padding: 20px;
-            background-color: var(--tertiary-bg);
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        
-        .team-member:hover, .sponsor:hover {
-            transform: scale(1.05);
-        }
-        
-        .team-member img, .sponsor img {
-            width: 180px;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            border: 4px solid var(--accent-color);
-        }
-        
-        .news-item, .match {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: var(--tertiary-bg);
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        
-        .news-item:hover, .match:hover {
-            transform: translateX(10px);
-        }
-        
-        form {
-            display: grid;
-            gap: 20px;
-        }
-        
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #444;
-            background-color: var(--tertiary-bg);
-            color: var(--text-color);
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        button {
-            padding: 12px 24px;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-        
-        button:hover {
-            background-color: #ff679a;
-            transform: scale(1.05);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            background-color: var(--secondary-bg);
-            margin-top: 60px;
-        }
-        
-        .gallery img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery img:hover {
-            transform: scale(1.1);
-        }
-        
-        #home {
-            text-align: center;
-            padding: 80px 0;
-        }
-        
-        #home h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        #home p {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-        }
-        
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            nav ul li {
-                margin: 10px 0;
-            }
-            
-            section {
-                padding: 20px;
-            }
-            
-            #home h1 {
-                font-size: 2rem;
-            }
-            
-            #home p {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#matches">Matches</a></li>
-                <li><a href="#team">Team</a></li>
-                <li><a href="#news">News</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#sponsors">Sponsors</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+      })
+
+      setActiveSection(currentActiveSection)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className="bg-black text-white min-h-screen">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-sm">
+        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl font-bold"
+          >
+            PFL
+          </motion.div>
+          <div className="md:hidden">
+            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <X /> : <Menu />}
+            </Button>
+          </div>
+          <AnimatePresence>
+            {(isMenuOpen || window.innerWidth >= 768) && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className={`${
+                  isMenuOpen ? 'flex' : 'hidden'
+                } md:flex flex-col md:flex-row absolute md:relative top-full left-0 right-0 bg-black md:bg-transparent p-4 md:p-0`}
+              >
+                {navItems.map((item) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    className={`block md:inline-block px-4 py-2 hover:text-gray-300 transition-colors ${
+                      activeSection === item.href.slice(1) ? 'text-white font-bold' : 'text-gray-400'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {item.name}
+                  </motion.a>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
-    </header>
+      </header>
 
-    <main class="container">
-        <section id="home">
-            <h1>Welcome to Kabaddi Warriors</h1>
-            <p>Strength, Strategy, Spirit</p>
-        </section>
-
-        <section id="matches">
-            <h2>Upcoming Matches</h2>
-            <div class="match">
-                <h3>Kabaddi Warriors vs Thunderbolts</h3>
-                <p>Date: June 15, 2023</p>
-                <p>Time: 18:00</p>
-                <p>Venue: City Stadium</p>
+      <main>
+        <section id="hero" className="h-screen flex items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0">
+            <HeroCanvas />
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10 text-center px-4"
+          >
+            <AnimatedText>
+              <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                Programming for Losers (PFL)
+              </h1>
+            </AnimatedText>
+            <AnimatedText>
+              <p className="text-xl mb-8">
+                Where coding failures become programming triumphs. Join our student-led club of aspiring programmers and future tech leaders!
+                <br /> We are integrated club with STUDENT DEVELOPER CLUB (SDC)
+              </p>
+            </AnimatedText>
+            <div className="flex flex-wrap justify-center gap-4">
+              {['Register Now', 'Join WhatsApp', 'SDC'].map((text, index) => (
+                <motion.div
+                  key={text}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Button
+                    variant={index === 1 ? 'secondary' : 'default'}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {text}
+                  </Button>
+                </motion.div>
+              ))}
             </div>
-            <div class="match">
-                <h3>Kabaddi Warriors vs Lightning Raiders</h3>
-                <p>Date: June 22, 2023</p>
-                <p>Time: 19:30</p>
-                <p>Venue: Sports Complex</p>
+          </motion.div>
+        </section>
+
+        <motion.section
+          id="about"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="py-20"
+        >
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">About PFL</h2>
+            <AnimatedText>
+              <p className="text-lg mb-4">
+                Programming for Losers (PFL) is a grassroots initiative started by a group of passionate first-year students. We're just a bunch of coding enthusiasts trying to create a supportive community outside of our formal college environment. Our goal? To connect with like-minded individuals who share our love for programming and technology.
+              </p>
+            </AnimatedText>
+            <AnimatedText>
+              <p className="text-lg">
+                As an independent club, we're not affiliated with any college or institution. We're simply students helping students, learning together, and building a network that extends beyond our campus. Whether you're a coding newbie or a budding tech wizard, PFL is the place where we all start as 'losers' but grow together into winners.
+              </p>
+            </AnimatedText>
+          </div>
+        </motion.section>
+
+        <motion.section
+          id="mentorship"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="py-20 bg-white text-black"
+        >
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Peer Learning, Not Teaching</h2>
+            <AnimatedText>
+              <p className="text-lg">
+                At PFL, we believe in the power of peer learning. We're all students here, learning and growing together. We share our experiences, help each other overcome coding challenges, and collaborate on projects. It's not about one person teaching another; it's about collective growth and mutual support.
+              </p>
+            </AnimatedText>
+          </div>
+        </motion.section>
+
+        <motion.section
+          id="opportunities"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="py-20"
+        >
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Opportunities</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {['Project Collaborations', 'Skill Sharing Sessions'].map((item, index) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white text-black p-6 rounded-lg shadow-lg"
+                >
+                  <h3 className="text-xl font-bold mb-4">{item}</h3>
+                  <p>
+                    {item === 'Project Collaborations'
+                      ? 'Team up with fellow members on coding projects. Gain hands-on experience and build your portfolio while learning from peers.'
+                      : 'Participate in regular skill-sharing meetups where members can present and learn about various programming topics and technologies.'}
+                  </p>
+                </motion.div>
+              ))}
             </div>
-        </section>
+          </div>
+        </motion.section>
 
-        <section id="team">
-            <h2>Our Team</h2>
-            <div class="team-members">
-                <div class="team-member">
-                    <img src="aditya.jpg" alt="John Doe">
-                    <h3>John Doe</h3>
-                    <p>Captain</p>
-                </div>
-                <div class="team-member">
-                    <img src="aditya.jpg" alt="Jane Smith">
-                    <h3>Jane Smith</h3>
-                    <p>Defender</p>
-                </div>
-                <div class="team-member">
-                    <img src="aditya.jpg" alt="Mike Johnson">
-                    <h3>Mike Johnson</h3>
-                    <p>Raider</p>
-                </div>
-                <div class="team-member">
-                    <img src="aditya.jpg" alt="Sarah Lee">
-                    <h3>Sarah Lee</h3>
-                    <p>All-Rounder</p>
-                </div>
+        <motion.section
+          id="courses"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="py-20 bg-white text-black"
+        >
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Our Learning Tracks</h2>
+            <AnimatedText>
+              <p className="text-lg mb-8 text-center">
+                While we're not a formal educational institution, we organize study groups and learning tracks based on member interests:
+              </p>
+            </AnimatedText>
+            <div className="grid md:grid-cols-3 gap-8">
+              {courses.map((course, index) => (
+                <motion.div
+                  key={course.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-black text-white p-6 rounded-lg shadow-lg"
+                >
+                  <h3 className="text-xl font-bold mb-4">{course.name}</h3>
+                  <p>{course.description}</p>
+                </motion.div>
+              ))}
             </div>
-        </section>
+          </div>
+        </motion.section>
 
-        <section id="news">
-            <h2>Recent News</h2>
-            <div class="news-item">
-                <h3>Kabaddi Warriors Secure Victory in Season Opener</h3>
-                <p>Our team started the season with a bang, defeating the reigning champions in a thrilling match that went down to the wire. The final score was 38-35, with our captain John Doe scoring the winning point in the last raid.</p>
+        <motion.section
+          id="join"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="py-20"
+        >
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-8">Join PFL Today</h2>
+            <AnimatedText>
+              <p className="text-lg mb-8">
+                Ready to start your programming journey with a supportive community of fellow students? Fill the google form for our mailing list and be the first to know about upcoming meetups, projects, and learning opportunities.
+              </p>
+            </AnimatedText>
+            <div className="flex flex-wrap justify-center gap-4">
+              {['Register Now', 'Join WhatsApp Community', 'SDC'].map((text, index) => (
+                <motion.div
+                  key={text}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Button
+                    variant={index === 1 ? 'secondary' : 'default'}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {text}
+                  </Button>
+                </motion.div>
+              ))}
             </div>
-            <div class="news-item">
-                <h3>New Player Joins Kabaddi Warriors</h3>
-                <p>We're excited to announce the addition of star player Alex Thompson to our roster. Alex brings years of experience and a track record of excellence that will undoubtedly strengthen our team's performance this season.</p>
-            </div>
-        </section>
+          </div>
+        </motion.section>
+      </main>
 
-        <section id="gallery">
-            <h2>Media Gallery</h2>
-            <div class="gallery">
-                <img src="group.jpg" alt="Match Highlight 1">
-                <img src="group2.jpg" alt="Team Practice">
-                <img src="group.jpg" alt="Fan Celebration">
-                <img src="group2.jpg" alt="Victory Moment">
-                <img src="group.jpg" alt="Team Huddle">
-                <img src="group2.jpg" alt="Award Ceremony">
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>Our Motto and Inspiration</h2>
-            <p>At Kabaddi Warriors, we draw inspiration from the strength and wisdom of Lord Ram and the devotion and power of Lord Hanuman. Our motto, "Strength, Strategy, Spirit," embodies the values we bring to every match.</p>
-            <p>We believe in the power of teamwork, the importance of strategic thinking, and the unbreakable spirit that drives us to excel. Just as Lord Ram's wisdom guided his actions and Lord Hanuman's devotion gave him immense strength, we strive to combine intelligence and power in our game.</p>
-            <p>Our team trains rigorously, not just in physical prowess but also in mental agility. We respect our opponents, honor the game, and always play with integrity. The Kabaddi Warriors are more than just a team; we're a family united by our love for the sport and our commitment to excellence.</p>
-        </section>
-
-        <section id="sponsors">
-            <h2>Our Sponsors and Partners</h2>
-            <div class="sponsors">
-                <div class="sponsor">
-                    <img src="aditya.jpg" alt="TechCorp Logo">
-                    <h3>TechCorp</h3>
-                    <p>Leading Technology Solutions</p>
-                </div>
-                <div class="sponsor">
-                    <img src="aditya.jpg" alt="SportGear Logo">
-                    <h3>SportGear</h3>
-                    <p>Premium Sports Equipment</p>
-                </div>
-                <div class="sponsor">
-                    <img src="aditya.jpg" alt="HealthPlus Logo">
-                    <h3>HealthPlus</h3>
-                    <p>Nutrition and Wellness Experts</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form id="contact-form">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required rows="5"></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2023 Kabaddi Warriors. All rights reserved.</p>
-        <p>Follow us on social media for the latest updates!</p>
-    </footer>
-
-    <script>
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message. We will get back to you soon!');
-            this.reset();
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+      <footer className="bg-white text-black py-8">
+        <div className="container mx-auto px-4 text-center">
+          <p>&copy; 2024 Programming for Losers (PFL). All rights reserved. Not affiliated with any educational institution.</p>
+        </div>
+      </footer>
+    </div>
+  )
+}
